@@ -107,6 +107,14 @@ Expected current result:
 
 Detects PHI/PII-like entities and masks them before model use.
 
+The current MVP includes lightweight healthcare recognizers for:
+
+- medical record numbers
+- provider title/name patterns
+- healthcare facility names
+
+Developers can also provide their own Presidio recognizers without editing core MedMesh guard code.
+
 ### PHIPromptBoundaryGuard
 
 Blocks raw PHI before an external model boundary.
@@ -128,13 +136,13 @@ Builds a governed runtime pipeline for external model workflows.
 ## Near-Term Roadmap
 
 1. Improve healthcare-specific PHI recognition.
-2. Add custom recognizers for medical record numbers.
-3. Add facility/provider pattern detection.
-4. Add richer audit event aggregation.
-5. Add FHIR read-only governance.
-6. Add SMART on FHIR scope mapping.
-7. Add policy runtime.
-8. Add LangGraph/MCP adapters.
+2. Add richer audit event aggregation.
+3. Add FHIR read-only governance.
+4. Add SMART on FHIR scope mapping.
+5. Add policy runtime.
+6. Add LangGraph/MCP adapters.
+7. Add evaluation datasets and PHI benchmark cases.
+8. Add optional cloud or remote recognizer integrations.
 
 ---
 

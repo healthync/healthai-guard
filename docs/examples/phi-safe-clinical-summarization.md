@@ -207,3 +207,66 @@ The next implementation step should add custom healthcare recognizers for:
 - facility or hospital names
 - provider title/name patterns
 
+---
+
+## Developer-Provided Recognizers
+
+MedMesh supports developer-provided Presidio recognizers.
+
+This allows teams to add organization-specific healthcare identifiers without editing core MedMesh guard logic.
+
+Examples of custom recognizers:
+
+- internal patient IDs
+- hospital-specific MRN formats
+- payer member IDs
+- lab accession numbers
+- claim IDs
+- custom encounter identifiers
+
+Example pattern:
+
+    from presidio_analyzer import Pattern, PatternRecognizer
+    from agentguard.medmesh.guards import PHIScrubberGuard
+
+    custom_recognizer = PatternRecognizer(
+        supported_entity="CUSTOM_PATIENT_CODE",
+        patterns=[
+            Pattern(
+                name="custom_patient_code",
+                regex=r"\bPATIENT-CODE-[0-9]{4}\b",
+                score=0.9,
+            )
+        ],
+        supported_language="en",
+    )
+
+    guard = PHIScrubberGuard(
+        custom_recognizers=[custom_recognizer],
+    )
+
+    guard.setup()
+
+Developers can also disable MedMesh built-in healthcare recognizers:
+
+    guard = PHIScrubberGuard(
+        enable_healthcare_recognizers=False,
+        custom_recognizers=[custom_recognizer],
+    )
+
+This is useful when a healthcare organization wants complete control over recognizer behavior.
+
+---
+
+## Current Built-In Healthcare Recognizers
+
+The MVP includes lightweight built-in recognizers for:
+
+- MEDICAL_RECORD_NUMBER
+- PROVIDER_NAME
+- HEALTHCARE_FACILITY
+
+These recognizers are intentionally narrow and deterministic.
+
+They are not a replacement for a full clinical de-identification engine.
+
