@@ -928,3 +928,67 @@ Add tests confirming:
 - raw values are not in metadata
 - protected text removes synthetic raw identifiers
 
+
+---
+
+# Task Group 13: Recognizer Registry Extensibility
+
+## Task 13.1: Create MedMesh Recognizer Module
+
+Purpose:
+
+    Move MedMesh healthcare recognizers out of guard classes and into a reusable recognizer module.
+
+Target module:
+
+    src/agentguard/medmesh/recognizers/
+
+Acceptance:
+
+- built-in healthcare recognizers are defined outside PHIScrubberGuard
+- boundary guards reuse the same recognizer provider
+- no duplicated recognizer regex logic
+
+---
+
+## Task 13.2: Support Developer-Provided Recognizers
+
+Purpose:
+
+    Allow developers to pass custom Presidio recognizers into MedMesh guards.
+
+Acceptance:
+
+- PHIScrubberGuard accepts custom_recognizers
+- PHIPromptBoundaryGuard accepts custom_recognizers
+- PHILeakageOutputGuard accepts custom_recognizers
+- custom recognizers are registered with AnalyzerEngine.registry
+- tests verify developer recognizers are loaded
+
+---
+
+## Task 13.3: Support Optional Built-In Healthcare Recognizers
+
+Purpose:
+
+    Allow built-in MedMesh healthcare recognizers to be enabled or disabled.
+
+Acceptance:
+
+- enable_healthcare_recognizers defaults to true
+- when true, built-in recognizers are registered
+- when false, built-in recognizers are not registered
+
+---
+
+## Task 13.4: Prepare Future File-Based Recognizer Registry
+
+Purpose:
+
+    Prepare for later YAML/JSON recognizer loading.
+
+Acceptance:
+
+- spec documents future recognizer config loading
+- implementation does not require YAML yet
+
