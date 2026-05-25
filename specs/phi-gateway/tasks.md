@@ -851,3 +851,80 @@ The implementation is complete when:
 - no raw PHI is stored in metadata or audit outputs
 - README clearly states that the MVP is not for clinical use
 
+
+---
+
+# Task Group 12: Add Healthcare-Specific Recognizers
+
+## Task 12.1: Add Custom MRN Recognizer
+
+Purpose:
+
+    Detect medical record number patterns that Presidio may miss or misclassify.
+
+Examples:
+
+- MRN 123456
+- MRN: 123456
+- Medical Record Number 123456
+- medical record no. 123456
+
+Acceptance:
+
+- MRN-like identifiers are detected as MEDICAL_RECORD_NUMBER
+- masked output replaces MRN value with [MEDICAL_RECORD_NUMBER]
+- metadata includes MEDICAL_RECORD_NUMBER in phi_types
+- metadata excludes raw MRN value
+
+---
+
+## Task 12.2: Add Provider Title Recognizer
+
+Purpose:
+
+    Improve detection of provider-style names.
+
+Examples:
+
+- Dr. Adams
+- Doctor Adams
+- Nurse Williams
+
+Acceptance:
+
+- provider title patterns are detected
+- provider names are masked
+- metadata excludes raw provider name
+
+---
+
+## Task 12.3: Add Facility Name Recognizer
+
+Purpose:
+
+    Improve detection of hospital/facility names.
+
+Examples:
+
+- Mercy General Hospital
+- St. Mary Medical Center
+- Austin Regional Clinic
+
+Acceptance:
+
+- healthcare facility-like names are detected as HEALTHCARE_FACILITY
+- facility names are masked
+- metadata includes HEALTHCARE_FACILITY where detected
+
+---
+
+## Task 12.4: Add Tests For Healthcare Recognizers
+
+Add tests confirming:
+
+- MRN is detected correctly
+- provider title/name is detected
+- facility name is detected
+- raw values are not in metadata
+- protected text removes synthetic raw identifiers
+
