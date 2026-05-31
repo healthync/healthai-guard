@@ -40,6 +40,30 @@ This profile is designed for workflows where raw PHI must not cross into an exte
 
 ---
 
+## Second Capability: FHIR Read-Only Governance
+
+The second MedMesh capability is FHIR Read-Only Governance.
+
+This capability demonstrates:
+
+- read-only FHIR operation enforcement
+- FHIR resource-type governance
+- simplified SMART/FHIR-like scope validation
+- patient-context enforcement
+- synthetic FHIR tool output inspection
+- PHI masking on FHIR tool outputs
+- audit-safe governance metadata
+
+The implemented profile is:
+
+    medmesh-fhir-readonly
+
+This profile is designed for mock or synthetic FHIR workflows where AI agents need governed read-only access to healthcare resources.
+
+The current implementation does not connect to a real FHIR server and does not validate real OAuth/SMART tokens.
+
+---
+
 ## Safety Notice
 
 This project is currently a research and engineering prototype.
@@ -77,13 +101,30 @@ The demo uses synthetic clinical text only and does not call a real external LLM
 
 ---
 
+## Run The FHIR Read-Only Governance Demo
+
+Run the demo:
+
+    PYTHONPATH=src python examples/medmesh_fhir_readonly_demo.py
+
+The demo uses synthetic FHIR-like JSON only.
+
+It demonstrates:
+
+- allowed read
+- blocked write
+- missing scope
+- patient mismatch
+- tool output PHI inspection on mock FHIR output
+
+---
+
 ## Run MedMesh Tests
 
     PYTHONPATH=src pytest tests/medmesh -q
 
 Expected current result:
-
-    16 passed
+    all MedMesh tests pass
 
 ---
 
@@ -93,11 +134,15 @@ Expected current result:
     ├── guards/
     │   ├── audit.py
     │   ├── boundary.py
+    │   ├── fhir.py
     │   └── phi.py
     ├── metadata/
     │   └── keys.py
-    └── profiles/
-        └── external_model_strict.py
+    ├── profiles/
+    │   ├── external_model_strict.py
+    │   └── fhir_readonly.py
+    └── recognizers/
+        └── healthcare.py
 
 ---
 
@@ -130,6 +175,26 @@ Emits audit-safe JSON events without storing raw PHI.
 ### External Model Strict Profile
 
 Builds a governed runtime pipeline for external model workflows.
+
+### FHIRReadOnlyGuard
+
+Blocks non-read FHIR operations in the read-only profile.
+
+### FHIRResourceScopeGuard
+
+Restricts FHIR access to configured resource types.
+
+### FHIRScopeGuard
+
+Validates simplified SMART/FHIR-like scopes such as `patient/Observation.read`.
+
+### PatientContextGuard
+
+Requires patient context and blocks cross-patient access.
+
+### FHIR Read-Only Profile
+
+Builds a governed runtime pipeline for synthetic/mock FHIR read-only workflows.
 
 ---
 
